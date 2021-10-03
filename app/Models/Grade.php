@@ -33,6 +33,17 @@ class Grade extends Model
     }
 
     /**
+     * A mutator which will convert the grade letter to uppercase before saving.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setLetterAttribute($value)
+    {
+        $this->attributes['letter'] = strtoupper($value);
+    }
+
+    /**
      * The course the grade is for.
      */
     public function course()
