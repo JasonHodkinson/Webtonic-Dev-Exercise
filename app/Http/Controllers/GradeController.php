@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Grade;
+use App\Imports\GradesImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 
 class GradeController extends Controller
@@ -38,7 +40,9 @@ class GradeController extends Controller
      */
     public function import(Request $request)
     {
-        //
+        Excel::import(new GradesImport, $request->file('grades'));
+        
+        return redirect('/')->with('success', 'All good!');
     }
 
     /**
