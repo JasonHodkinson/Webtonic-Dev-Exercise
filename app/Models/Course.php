@@ -22,6 +22,17 @@ class Course extends Model
     ];
 
     /**
+     * A mutator which will convert the course code to uppercase before saving.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setCodeAttribute($value)
+    {
+        $this->attributes['code'] = strtoupper($value);
+    }
+
+    /**
      * All the grades for a course.
      */
     public function grades()

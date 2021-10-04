@@ -44,6 +44,24 @@ class Grade extends Model
     }
 
     /**
+     * An accessor which will get the color dependant on the grade letter.
+     * 
+     * @return string
+     */
+    public function getColorAttribute()
+    {
+        if ($this->letter == "A") {
+            return "green";
+        }
+
+        if ($this->letter == "F") {
+            return "red";
+        }
+
+        return "yellow";
+    }
+
+    /**
      * The course the grade is for.
      */
     public function course()
