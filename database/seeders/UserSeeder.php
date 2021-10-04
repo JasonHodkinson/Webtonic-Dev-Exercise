@@ -14,6 +14,10 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(3)->create();
+        // Make sure the first user created is an admin
+        User::factory(3)
+            ->sequence(fn ($sequence) => [
+                'is_admin' => $sequence->index == 0 ? true : false
+            ])->create();
     }
 }
