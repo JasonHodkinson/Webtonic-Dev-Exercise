@@ -22,6 +22,26 @@ class GradeController extends Controller
     }
 
     /**
+     * Display a CSV uploader to insert multiple grades.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function upload()
+    {
+        return view('grades.upload');
+    }
+
+    /**
+     * Imports data from a CSV and bulk creates grades.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function import(Request $request)
+    {
+        //
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

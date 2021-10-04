@@ -21,10 +21,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
 
+// Courses
 Route::resource('courses', CourseController::class);
+
+// Students
 Route::resource('students', StudentController::class);
+
+// Grades
+Route::get('grades/upload', [GradeController::class, 'upload'])->name('grades.upload');
+Route::post('grades/import', [GradeController::class, 'import'])->name('grades.import');
 Route::resource('grades', GradeController::class);
 
 require __DIR__.'/auth.php';
