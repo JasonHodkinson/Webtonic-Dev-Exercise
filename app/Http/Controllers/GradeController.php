@@ -7,9 +7,20 @@ use App\Imports\GradesImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Throwable;
 
 class GradeController extends Controller
 {
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Grade::class, 'grade');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -31,6 +42,9 @@ class GradeController extends Controller
      */
     public function upload()
     {
+        // Need to check for authorisation because this is not a typical method in a resource controller
+        auth()->user()->can('import', Grade::Class);
+
         return view('grades.upload');
     }
 
@@ -41,69 +55,22 @@ class GradeController extends Controller
      */
     public function import(Request $request)
     {
+        // Need to check for authorisation because this is not a typical method in a resource controller
+        auth()->user()->can('import', Grade::Class);
+
         Validator::make($request->all(), [
             'csv_document' => ['required', 'file', 'max:10240'],
         ])->validate();
 
-        Excel::import(new GradesImport, $request->file('csv_document'));
+        try {
+            Excel::import(new GradesImport, $request->file('csv_document'));
+        } catch (Throwable $exception) {
+            alert()->error('Error', 'There was an issue importing the data');
+            return redirect()->back();
+        }
 
         alert()->success('Success', 'All records were successfully imported');
-        return redirect()->back()->with('success', true);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Grade  $grade
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Grade $grade)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Grade  $grade
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Grade $grade)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Grade  $grade
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Grade $grade)
-    {
-        //
+        return redirect()->route('grades.index');
     }
 
     /**
@@ -114,6 +81,12 @@ class GradeController extends Controller
      */
     public function destroy(Grade $grade)
     {
-        //
+        if ($grade->delete()) {
+            alert()->success('Success', 'Grade deleted');
+            return redirect()->back();
+        }
+
+        alert()->error('Error', 'There was an issue deleting the grade');
+        return redirect()->back();
     }
 }

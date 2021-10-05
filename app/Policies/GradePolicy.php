@@ -22,43 +22,13 @@ class GradePolicy
     }
 
     /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Grade  $grade
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function view(User $user, Grade $grade)
-    {
-        return $user->is_admin;
-    }
-
-    /**
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function import(User $user)
     {
-        return $user->is_admin;
-    }
-
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Grade  $grade
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function update(User $user, Grade $grade)
-    {
-        // If the grade has a creator, only they can edit it
-        if ($grade->has('creator')) {
-            return $grade->creator->is($user);
-        }
-
-        // If no creator exists then only admins can edit it
         return $user->is_admin;
     }
 

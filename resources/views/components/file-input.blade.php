@@ -1,4 +1,4 @@
-@props(['invalid' => false, 'disabled' => false])
+@props(['invalid' => false])
 
 @php
 $classes = ($invalid)
@@ -6,4 +6,4 @@ $classes = ($invalid)
         : 'border-gray-300 focus:ring-blue-600 block w-full overflow-hidden cursor-pointer border text-gray-800 bg-white rounded-md shadow-sm focus:outline-none focus:ring-2 focus:border-transparent';
 @endphp
 
-<input type="file" {{ $disabled ? 'disabled' : '' }} {!! $attributes->merge(['class' => $classes]) !!} />
+<input type="file" {!! $attributes->merge(['class' => $classes]) !!} />

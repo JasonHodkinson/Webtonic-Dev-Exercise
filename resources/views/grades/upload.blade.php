@@ -29,7 +29,7 @@
                         Upload a .csv file
                     </label>
                     <div class="relative">
-                        <x-file-input required name="csv_document" accept=".csv" />
+                        <x-file-input required name="csv_document" accept=".csv" :invalid="$errors->has('csv_document')" />
                     </div>
                     @error('csv_document')
                         <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
