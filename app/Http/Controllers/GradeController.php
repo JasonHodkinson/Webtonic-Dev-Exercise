@@ -42,12 +42,13 @@ class GradeController extends Controller
     public function import(Request $request)
     {
         Validator::make($request->all(), [
-            'csv_document' => ['required', 'file', 'mimes:csv', 'max:10240'],
+            'csv_document' => ['required', 'file', 'max:10240'],
         ])->validate();
 
         Excel::import(new GradesImport, $request->file('csv_document'));
-        
-        return redirect()->route('grades.upload')->with('success', true);
+
+        alert()->success('Success', 'All records were successfully imported');
+        return redirect()->back()->with('success', true);
     }
 
     /**

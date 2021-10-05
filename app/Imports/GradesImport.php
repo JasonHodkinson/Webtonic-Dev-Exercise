@@ -60,7 +60,7 @@ class GradesImport implements ToCollection, WithHeadingRow
     /**
      * Validates the data supplied by the csv.
      *
-     * @param array $data
+     * @param array $rows
      *
      * @return void
      */
@@ -68,13 +68,20 @@ class GradesImport implements ToCollection, WithHeadingRow
     {
         // Check all the data is valid
         Validator::make($data, [
-            '*.student_number'     => ['required', 'numeric'],
+            '*.student_number'     => ['required', 'numeric', 'digits:5'],
             '*.firstname'          => ['required', 'string', 'min:2', 'max:50'],
             '*.surname'            => ['required', 'string', 'min:2', 'max:50'],
             '*.course_code'        => ['required', 'string', 'size:5'],
             '*.course_description' => ['required', 'string', 'min:5', 'max:50'],
             '*.grade'              => [Rule::in(Grade::availableLetters())],
-        ])->validate();
+        ], [], [
+            '*.student_number' => 'student number',
+            '*.firstname' => 'firstname',
+            '*.surname' => 'surname',
+            '*.course_code' => 'course code',
+            '*.course_description' => 'course description',
+            '*.grade' => 'grade',
+        ])->validateWithBag('csv');
     }
 
     /**

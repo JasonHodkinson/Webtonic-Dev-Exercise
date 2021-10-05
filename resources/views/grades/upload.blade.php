@@ -35,9 +35,20 @@
                         <div class="text-red-600 text-sm mt-1">{{ $message }}</div>
                     @enderror
                     <div class="mt-1 text-sm text-gray-500">
-                        Please note that the delimeter of the .csv should be the <code>;</code> symbol.
+                        Please note that the delimeter of the .csv should be the <code>;</code> symbol and the file should not exceed 10MB.
                     </div>
                 </div>
+
+                @if ($errors->hasBag('csv'))
+                    <div class="bg-red-100 text-red-900 shadow-sm rounded p-3 mb-4">
+                        <label>Errors in CSV:</label>
+                        <ul class="list-disc list-inside">
+                            @foreach ($errors->csv->all() as $message)
+                            <li>{{ $message }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             </div>
             <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
                 <button type="submit"
