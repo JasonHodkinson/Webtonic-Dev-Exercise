@@ -33,11 +33,11 @@ Route::middleware(['auth'])->group(function () {
 
     // Grades
     Route::prefix('grades')->name('grades.')->group(function() {
+        Route::get('/', [GradeController::class, 'index'])->name('index');
         Route::get('upload', [GradeController::class, 'upload'])->name('upload');
         Route::post('import', [GradeController::class, 'import'])->name('import');
+        Route::delete('{grade}', [GradeController::class, 'destroy'])->name('destroy');
     });
- 
-    Route::resource('grades', GradeController::class);
 });
 
 require __DIR__.'/auth.php';

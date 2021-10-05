@@ -38,9 +38,6 @@
                     </div>
                 </x-table-data>
                 <x-table-data class="text-right">
-                    <a class="text-sm text-indigo-600 hover:text-indigo-900"
-                        href="{{ route('grades.edit', ['grade' => $grade]) }}">Edit</a>
-                    <span class="text-sm text-gray-500">|</span>
                     <a class="text-sm text-red-600 hover:text-red-900"
                         href="{{ route('grades.destroy', ['grade' => $grade]) }}">Delete</a>
                 </x-table-data>
