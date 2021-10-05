@@ -56,7 +56,7 @@ class CoursePolicy
     public function update(User $user, Course $course)
     {
         // If the course has a creator, only they can edit it
-        if ($student->creator()->exists()) {
+        if ($course->creator()->exists()) {
             return $course->creator->is($user);
         }
 

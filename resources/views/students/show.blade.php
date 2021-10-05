@@ -34,7 +34,6 @@
                                 <x-table-header>Course Code</x-table-header>
                                 <x-table-header>Description</x-table-header>
                                 <x-table-header class="text-center">Grade</x-table-header>
-                                <x-table-header class="text-right">Actions</x-table-header>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -52,14 +51,10 @@
                                         {{ $grade->letter }}
                                     </span>
                                 </x-table-data>
-                                <x-table-data class="text-right">
-                                    <a class="text-sm text-red-600 hover:text-red-900"
-                                        href="{{ route('grades.destroy', ['grade' => $grade]) }}">Delete</a>
-                                </x-table-data>
                             </tr>
                             @empty
                             <tr>
-                                <x-table-data colspan="4">
+                                <x-table-data colspan="3">
                                     <div class="text-sm text-gray-900">There are no grades yet for this student.</div>
                                 </x-table-data>
                             </tr>
@@ -75,9 +70,11 @@
             <x-button-link href="{{ route('students.index') }}">
                 Back to Students
             </x-button-link>
-            <x-button-link href="{{ route('students.edit', ['student' => $student]) }}" class="bg-indigo-600 hover:bg-indigo-700">
-                Edit
-            </x-button-link>
+            @can('update', $student)
+                <x-button-link href="{{ route('students.edit', ['student' => $student]) }}" class="bg-indigo-600 hover:bg-indigo-700">
+                    Edit
+                </x-button-link>
+            @endcan
         </div>
     </div>
 </x-app-layout>
