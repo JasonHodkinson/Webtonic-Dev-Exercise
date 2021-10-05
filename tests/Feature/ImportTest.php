@@ -20,7 +20,7 @@ class ImportTest extends TestCase
         // Get the example .csv
         $file = new UploadedFile(storage_path('framework/testing/grades.csv'), 'grades.csv');
 
-        $response = $this->postJson('/grades/import', ['grades' => $file]);
+        $response = $this->postJson('/grades/import', ['csv_document' => $file]);
 
         // Assert the request was successful
         $response->assertSessionHas('success', true);
