@@ -1,3 +1,22 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+::file-selector-button {
+@apply text-gray-800 bg-gray-300 hover:bg-gray-200
+    font-medium text-sm cursor-pointer
+    border-0 border-r border-solid border-gray-300
+    py-2.5 pl-8 pr-4;
+    margin-inline-start: -1rem;
+    margin-inline-end: 1rem;
+}
+
+::-webkit-file-upload-button {
+@apply text-gray-800 bg-gray-300 hover:bg-gray-200
+    font-medium text-sm cursor-pointer
+    border-0 border-r border-solid border-gray-300
+    py-2.5 pl-8 pr-4;
+    margin-inline-start: -1rem;
+    margin-inline-end: 1rem;
+}
+
