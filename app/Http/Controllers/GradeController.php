@@ -22,20 +22,6 @@ class GradeController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        $grades = Grade::with('course', 'student')
-            ->latest()
-            ->paginate(10);
-
-        return view('grades.index', compact('grades'));
-    }
-
-    /**
      * Display a CSV uploader to insert multiple grades.
      *
      * @return \Illuminate\Http\Response

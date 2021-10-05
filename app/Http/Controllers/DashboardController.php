@@ -21,6 +21,10 @@ class DashboardController extends Controller
             'grades' => Grade::count()
         ];
 
-        return view('dashboard', compact('entries'));
+        $grades = Grade::with('course', 'student')
+            ->latest()
+            ->paginate(10);
+
+        return view('dashboard', compact('entries', 'grades'));
     }
 }
