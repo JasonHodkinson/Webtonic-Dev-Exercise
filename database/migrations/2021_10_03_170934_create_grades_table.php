@@ -27,6 +27,8 @@ class CreateGradesTable extends Migration
                 ->constrained('users')
                 ->onDelete('set null');
             $table->timestamps();
+
+            $table->unique(["course_id", "student_id"]);
         });
     }
 
