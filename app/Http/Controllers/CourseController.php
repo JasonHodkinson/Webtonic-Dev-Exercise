@@ -8,6 +8,31 @@ use Illuminate\Http\Request;
 class CourseController extends Controller
 {
     /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->authorizeResource(Course::class, 'course');
+    }
+
+    /**
+     * Validate the incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Course  $course
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    private function validator(Request $request, Course $course = null)
+    {
+        return $request->validate([
+            'code'        => ['required', 'string', 'max:50', Rule::unique('courses')->ignore(optional($course)->id)],
+            'description' => ['required', 'string', 'min:5', 'max:50'],
+        ]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -26,7 +51,9 @@ class CourseController extends Controller
      */
     public function create()
     {
-        //
+        $course = new Course();
+
+        return view('courses.create', compact('course'));
     }
 
     /**
@@ -37,7 +64,17 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validator($request);
+
+        $course = Course::create($request->only('code', 'description'));
+
+        if ($course) {
+            alert()->success('Success', 'Course created');
+            return redirect()->route('courses.index');
+        }
+
+        alert()->error('Error', 'Failed to create course');
+        return redirect()->back()->withInput();
     }
 
     /**
@@ -48,7 +85,7 @@ class CourseController extends Controller
      */
     public function show(Course $course)
     {
-        //
+        return view('courses.show', compact('course'));
     }
 
     /**
@@ -59,7 +96,7 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        //
+        return view('courses.edit', compact('course'));
     }
 
     /**
@@ -71,7 +108,17 @@ class CourseController extends Controller
      */
     public function update(Request $request, Course $course)
     {
-        //
+        $this->validator($request, $course);
+
+        $updated = $course->update($request->only('code', 'description'));
+
+        if ($updated) {
+            alert()->success('Success', 'Course updated');
+            return redirect()->route('courses.index');
+        }
+
+        alert()->error('Error', 'Failed to update course');
+        return redirect()->back()->withInput();
     }
 
     /**
@@ -82,6 +129,12 @@ class CourseController extends Controller
      */
     public function destroy(Course $course)
     {
-        //
+        if ($course->delete()) {
+            alert()->success('Success', 'Course deleted');
+            return redirect()->route('courses.index');
+        }
+
+        alert()->error('Error', 'There was an issue deleting the course');
+        return redirect()->back();
     }
 }
