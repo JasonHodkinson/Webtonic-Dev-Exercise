@@ -5,6 +5,25 @@
             <div class="p-6">
                 <h1>Grades Uploader</h1>
                 <hr class="my-4">
+
+                <div class="bg-yellow-100 text-yellow-900 shadow-sm rounded p-3 mb-4">
+                    <label>Things to note:</label>
+                    <ul class="list-disc list-inside">
+                        <li>The first row must contain the following headers:</li>
+                        <ul class="list-disc list-inside ml-4">
+                            <li>Student Number</li>
+                            <li>Firstname</li>
+                            <li>Surname</li>
+                            <li>Course Code</li>
+                            <li>Course Description</li>
+                            <li>Grade</li>
+                        </ul>
+                        <li>If the student number matches an existing student, they will be updated with the new first name and surname if it differs.</li>
+                        <li>If the course code matches an existing course, it will be updated with the new course description if it differs.</li>
+                        <li>The available grade letters are: {{ implode(', ', \App\Models\Grade::availableLetters()) }}</li>
+                    </ul>
+                </div>
+                
                 <div class="mb-4">
                     <label class="mb-1 block text-sm font-medium text-gray-800" for="csv_document">
                         Upload a .csv file
