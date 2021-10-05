@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->outputAdminCredentials();
+        $this->outputUserCredentials();
     }
 
     /**
@@ -34,7 +35,21 @@ class DatabaseSeeder extends Seeder
         $admin = User::firstWhere('is_admin', true);
 
         if ($admin) {
-            $this->command->comment("The admin login is \n- Email: " . $admin->email . "\n- Password: password");
+            $this->command->comment("\nThe admin login is \n- Email: " . $admin->email . "\n- Password: password");
+        }
+    }
+
+    /**
+     * Get the login details of the first regular user and display it in the console.
+     *
+     * @return void
+     */
+    private function outputUserCredentials()
+    {
+        $user = User::firstWhere('is_admin', false);
+
+        if ($user) {
+            $this->command->comment("\nRegular user login \n- Email: " . $user->email . "\n- Password: password");
         }
     }
 }
