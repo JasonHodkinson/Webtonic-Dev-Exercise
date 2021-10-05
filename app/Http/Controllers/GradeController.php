@@ -43,7 +43,7 @@ class GradeController extends Controller
     public function upload()
     {
         // Need to check for authorisation because this is not a typical method in a resource controller
-        auth()->user()->can('import', Grade::Class);
+        $this->authorize('import', Grade::class);
 
         return view('grades.upload');
     }
@@ -56,7 +56,7 @@ class GradeController extends Controller
     public function import(Request $request)
     {
         // Need to check for authorisation because this is not a typical method in a resource controller
-        auth()->user()->can('import', Grade::Class);
+        $this->authorize('import', Grade::Class);
 
         Validator::make($request->all(), [
             'csv_document' => ['required', 'file', 'max:10240'],
