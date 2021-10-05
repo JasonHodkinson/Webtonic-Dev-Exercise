@@ -42,7 +42,7 @@ class GradeController extends Controller
     {
         Excel::import(new GradesImport, $request->file('grades'));
         
-        return redirect('/')->with('success', 'All good!');
+        return redirect()->route('grades.upload')->with('success', true);
     }
 
     /**
