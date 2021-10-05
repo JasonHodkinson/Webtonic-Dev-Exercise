@@ -21,18 +21,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Dashboard
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+Route::middleware(['auth'])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-// Courses
-Route::resource('courses', CourseController::class);
+    // Courses
+    Route::resource('courses', CourseController::class);
 
-// Students
-Route::resource('students', StudentController::class);
+    // Students
+    Route::resource('students', StudentController::class);
 
-// Grades
-Route::get('grades/upload', [GradeController::class, 'upload'])->name('grades.upload');
-Route::post('grades/import', [GradeController::class, 'import'])->name('grades.import');
-Route::resource('grades', GradeController::class);
+    // Grades
+    Route::prefix('grades')->name('grades.')->group(function() {
+        Route::get('upload', [GradeController::class, 'upload'])->name('upload');
+        Route::post('import', [GradeController::class, 'import'])->name('import');
+    });
+ 
+    Route::resource('grades', GradeController::class);
+});
 
 require __DIR__.'/auth.php';
