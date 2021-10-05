@@ -48,8 +48,7 @@
             @empty
             <tr>
                 <x-table-data colspan="5">
-                    <div class="text-sm text-gray-900">There are no entries recorded in the
-                        database.</div>
+                    <div class="text-sm text-gray-900">There are no entries recorded in the database.</div>
                 </x-table-data>
             </tr>
             @endforelse
