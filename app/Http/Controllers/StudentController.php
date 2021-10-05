@@ -87,6 +87,8 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
+        $student->load('grades.course');
+        
         return view('students.show', compact('student'));
     }
 
