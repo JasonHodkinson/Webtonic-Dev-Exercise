@@ -49,7 +49,7 @@ class DatabaseSeeder extends Seeder
         $user = User::firstWhere('is_admin', false);
 
         if ($user) {
-            $this->command->comment("\nRegular user login \n- Email: " . $user->email . "\n- Password: password");
+            $this->command->comment("\nRegular user login \n- Email: " . $user->email . "\n- Password: password\n");
         }
     }
 }
