@@ -41,5 +41,8 @@
 
         <!-- Sweet Alert -->
         @include('sweetalert::alert')
+
+        <!-- Pace Specific Scripts -->
+        @stack('scripts')
     </body>
 </html>

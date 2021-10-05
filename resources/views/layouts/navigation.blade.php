@@ -15,15 +15,24 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @can('import', \App\Models\Grade::class)
                     <x-nav-link :href="route('grades.upload')" :active="request()->routeIs('grades.*')">
                         {{ __('Upload Grades') }}
                     </x-nav-link>
+                    @endcan
+
+                    @can('viewAny', \App\Models\Course::class)
                     <x-nav-link :href="route('courses.index')" :active="request()->routeIs('courses.*')">
                         {{ __('Courses') }}
                     </x-nav-link>
+                    @endcan
+
+                    @can('viewAny', \App\Models\Student::class)
                     <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.*')">
                         {{ __('Students') }}
                     </x-nav-link>
+                    @endcan
                 </div>
             </div>
 

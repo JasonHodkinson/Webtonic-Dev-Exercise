@@ -12,7 +12,9 @@
                 <x-table-header>Course Code</x-table-header>
                 <x-table-header class="text-center">Grade</x-table-header>
                 <x-table-header class="hidden sm:table-cell">Last Updated</x-table-header>
+                @if(auth()->user()->is_admin)
                 <x-table-header class="text-right">Actions</x-table-header>
+                @endif
             </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">
@@ -42,10 +44,17 @@
                     <div class="text-sm text-gray-500">{{ $grade->updated_at->diffForHumans() }}
                     </div>
                 </x-table-data>
+                @can('delete', $grade)
                 <x-table-data class="text-right">
-                    <a class="text-sm text-red-600 hover:text-red-900"
-                        href="{{ route('grades.destroy', ['grade' => $grade]) }}">Delete</a>
+                    <form action="{{ route('grades.destroy', $grade) }}"
+                        method="POST">
+                        @csrf
+                        @method("DELETE")
+
+                        <button type="button" onclick="confirmDelete(this)" class="text-sm text-red-600 hover:text-red-900">Delete</button>
+                    </form>
                 </x-table-data>
+                @endcan
             </tr>
             @empty
             <tr>
@@ -63,4 +72,22 @@
             </tr>
         </tfoot>
     </x-responsive-table>
+
+    @push('scripts')
+    <script type="text/javascript">
+        function confirmDelete(e) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Are you sure you want to delete this grade? This can\'t be undone.',
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                confirmButtonColor: '#ff7851'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    e.closest("form").submit();
+                }
+            });
+        }
+    </script>
+    @endpush
 </x-app-layout>

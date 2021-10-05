@@ -12,7 +12,9 @@
                         <x-table-header>First Name</x-table-header>
                         <x-table-header>Surname</x-table-header>
                         <x-table-header class="hidden sm:table-cell">Last Updated</x-table-header>
+                        @if(auth()->user()->is_admin)
                         <x-table-header class="text-right">Actions</x-table-header>
+                        @endif
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -31,13 +33,23 @@
                         <x-table-data class="hidden sm:table-cell">
                             <div class="text-sm text-gray-500">{{ $student->updated_at->diffForHumans() }}</div>
                         </x-table-data>
+                        @if(auth()->user()->is_admin)
                         <x-table-data class="text-right">
+                            @can('update', $student)
                             <a class="text-sm text-indigo-600 hover:text-indigo-900"
                                 href="{{ route('students.edit', ['student' => $student]) }}">Edit</a>
-                            <span class="text-sm text-gray-500">|</span>
-                            <a class="text-sm text-red-600 hover:text-red-900"
-                                href="{{ route('students.destroy', ['student' => $student]) }}">Delete</a>
+                            @endcan
+                            @can(['update', 'delete'], $student)<span class="text-sm text-gray-500">|</span>@endcan
+                            @can('delete', $student)
+                                <form class="inline" action="{{ route('students.destroy', $student) }}" method="POST">
+                                    @csrf
+                                    @method("DELETE")
+                            
+                                    <button type="button" onclick="confirmDelete(this)" class="text-sm text-red-600 hover:text-red-900">Delete</button>
+                                </form>
+                            @endcan
                         </x-table-data>
+                        @endif
                     </tr>
                     @empty
                     <tr>
@@ -58,8 +70,28 @@
         </div>
 
         {{-- Action Button --}}
-        <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
-            <x-button-link href=" {{ route('students.create') }}" class="bg-indigo-500 hover:bg-indigo-700">Add a Student</x-button-link>
-        </div>
+        @can('create', \App\Models\Student::class)
+            <div class="px-4 py-3 bg-gray-50 text-right sm:px-6">
+                <x-button-link href=" {{ route('students.create') }}" class="bg-indigo-500 hover:bg-indigo-700">Add a Student</x-button-link>
+            </div>
+        @endcan
     </div>
+
+    @push('scripts')
+    <script type="text/javascript">
+        function confirmDelete(e) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Are you sure you want to delete this student? This can\'t be undone.',
+                showCancelButton: true,
+                confirmButtonText: 'Delete',
+                confirmButtonColor: '#ff7851'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    e.closest("form").submit();
+                }
+            });
+        }
+    </script>
+    @endpush
 </x-app-layout>
