@@ -6,6 +6,7 @@ use App\Models\Grade;
 use App\Imports\GradesImport;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class GradeController extends Controller
 {
@@ -40,7 +41,11 @@ class GradeController extends Controller
      */
     public function import(Request $request)
     {
-        Excel::import(new GradesImport, $request->file('grades'));
+        Validator::make($request->all(), [
+            'csv_document' => ['required', 'file', 'mimes:csv', 'max:10240'],
+        ])->validate();
+
+        Excel::import(new GradesImport, $request->file('csv_document'));
         
         return redirect()->route('grades.upload')->with('success', true);
     }
