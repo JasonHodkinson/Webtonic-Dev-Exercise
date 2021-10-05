@@ -54,7 +54,7 @@ class StudentPolicy
     public function update(User $user, Student $student)
     {
         // If the student has a creator, only they can edit their details
-        if ($student->has('creator')) {
+        if ($student->creator()->exists()) {
             return $student->creator->is($user);
         }
 
