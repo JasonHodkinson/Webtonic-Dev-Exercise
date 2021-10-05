@@ -17,8 +17,7 @@
                         <a class="text-indigo-600 hover:text-indigo-900"
                             href="{{ route('students.show', ['student' => $grade->student]) }}">{{ $grade->student->full_name }}</a>
                     </div>
-                    <div class="text-sm text-gray-500">{{ $grade->student->student_number }}
-                    </div>
+                    <div class="text-sm text-gray-500">{{ $grade->student->student_number }}</div>
                 </x-table-data>
                 <x-table-data>
                     <div class="text-sm text-gray-900">
