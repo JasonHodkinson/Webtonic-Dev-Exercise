@@ -103,7 +103,7 @@ class GradesImport implements ToCollection, WithHeadingRow
     {
         // Get all related students and courses
         $studentNumbers = $rows->pluck('student_number')->unique()->toArray();
-        $courseCodes = $rows->pluck('course_codes')->unique()->toArray();
+        $courseCodes = $rows->pluck('course_code')->unique()->toArray();
 
         $this->getRelatedData($studentNumbers, $courseCodes);
 
@@ -118,7 +118,7 @@ class GradesImport implements ToCollection, WithHeadingRow
             }
         }
 
-        Grade::upsert($grades->toArray(), ['course_id', 'student_id', ['letter']]);
+        Grade::upsert($grades->toArray(), ['course_id', 'student_id'], ['letter']);
     }
 
     /**
